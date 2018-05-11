@@ -1,0 +1,78 @@
+version: '2'
+services:
+  apache:
+    build: docker-images/apache
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./prestashop/:/var/www/html/
+    networks:
+      - front-tier
+      - back-tier
+    env_file: .env
+    environment: 
+      DB_SERVER: ${DB_SERVER} 
+      DB_PORT: ${DB_PORT} 
+      DB_NAME: ${DB_NAME} 
+      DB_USER: ${DB_USER} 
+      DB_PASSWD: ${DB_PASSWD} 
+      DB_PREFIX: ${DB_PREFIX} 
+      DB_ROOT_PASSWD: ${DB_ROOT_PASSWD}
+      PS_DOMAIN: ${PS_DOMAIN}
+      DDMIN_MAIL: ${ADMIN_MAIL}
+      ADMIN_PASSWD: ${ADMIN_PASSWD} 
+      PS_LANGUAGE: ${PS_LANGUAGE} 
+      PS_COUNTRY: ${PS_COUNTRY} 
+      PS_INSTALL_AUTO: ${PS_INSTALL_AUTO}
+      PS_ERASE_DB: ${PS_ERASE_DB}
+      PS_DEV_MODE: ${PS_DEV_MODE}
+      PS_HOST_MODE: ${PS_HOST_MODE}
+      PS_HANDLE_DYNAMIC_DOMAIN: ${PS_HANDLE_DYNAMIC_DOMAIN}
+      PS_FOLDER_ADMIN: ${PS_FOLDER_ADMIN} 
+      PS_FOLDER_INSTALL: ${PS_FOLDER_INSTALL}
+
+  mysql:
+    image: mysql:5.6
+    hostname: db-server
+    ports:
+      - 8083:3306
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+    networks:
+      - back-tier
+    env_file: .env
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWD}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWD}
+      MYSQL_DATABASE: ${DB_NAME}
+
+  phpadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "9010:80"
+    networks:
+      - back-tier
+    environment:
+      PMA_HOST: "mysql"
+      PMA_PORT: "3306"
+
+  # For debugging purposes only
+  # portainer:
+  #   image: portainer/portainer:latest
+  #   privileged: true
+  #   ports:
+  #     - "9000:9000"
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock
+
+volumes:
+  mysql-data:
+    driver: local
+
+networks:
+  front-tier:
+    driver: bridge
+  back-tier:
+    driver: bridge
