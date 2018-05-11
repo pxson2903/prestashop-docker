@@ -3,6 +3,8 @@
 A simple dockerized version using [PrestaShop](https://www.prestashop.com/) using [Apache](https://httpd.apache.org/), [MySQL](https://www.mysql.com) and [phpMyAdmin](https://www.phpmyadmin.net/). 
 This project is based on [Prestashop](https://github.com/PrestaShop/docker/) and [nginx-prestashop](https://github.com/schlpbch/nginx-prestashop). I make it for my Prestashop development, avoid some prestashop issues related to Nginx.
 
+This project support Prestashop version 1.6.x and 1.7.x. To download specific version, please edit it in the file [install-prestashop.1.6.sh](install-prestashop.1.6.sh) or [install-prestashop.1.7.sh](install-prestashop.1.7.sh)
+
 ## Installation
 
 *Prerequisite*:
