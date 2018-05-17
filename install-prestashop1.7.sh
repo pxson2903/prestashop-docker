@@ -17,3 +17,7 @@ mv index.php prestashop
 
 # Remove zip and install file
 rm prestashop_1.7.1.1.zip Install_PrestaShop.html
+
+# Unzip prestashop.zip
+cd prestashop
+unzip prestashop.zip
